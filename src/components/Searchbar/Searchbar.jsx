@@ -1,11 +1,11 @@
 import { Component } from "react";
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
   render() {
     return (
-      <header class="searchbar">
+      <header className={css.Searchbar}>
         <form class="form">
           <button type="submit" class="button">
             <span class="button-label">Search</span>
