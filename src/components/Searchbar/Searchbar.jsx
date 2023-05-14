@@ -6,13 +6,13 @@ class Searchbar extends Component {
   render() {
     return (
       <header className={css.Searchbar}>
-        <form class="form">
-          <button type="submit" class="button">
-            <span class="button-label">Search</span>
+        <form className={css.SearchForm}>
+          <button type="submit" className={css.SearchFormButton}>
+            <span className={css.SearchFormButtonLabel}>Search</span>
           </button>
 
           <input
-            class="input"
+            className={css.SearchFormInput}
             type="text"
             autocomplete="off"
             autofocus
