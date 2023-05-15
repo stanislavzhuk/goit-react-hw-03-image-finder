@@ -50,8 +50,11 @@ class App extends Component {
           status: STATUS.RESOLVED,
         }));
       } catch (error) {
+        this.setState({
+          status: STATUS.REJECTED,
+          error: new Error(`Unable to find image for category ${searchQuery}`),
+        });
         toast.error(`Sorry something went wrong. ${error.message}`);
-        this.setState({ status: STATUS.REJECTED });
       }
     }
   };
@@ -65,6 +68,7 @@ class App extends Component {
       error: null,
       largeImage: {},
       showModal: false,
+      isActive: false,
     })
   };
 
@@ -92,7 +96,7 @@ class App extends Component {
   };
   
   render() {
-    const { images, showModal, largeImage, status, isActive } = this.state;
+    const { images, showModal, largeImage, status, isActive, error } = this.state;
 
     return (
       <div className={css.App}>
@@ -100,6 +104,11 @@ class App extends Component {
         {status === STATUS.PENDING && <Loader />}
         {status === STATUS.RESOLVED && (
           <ImageGallery images={images} onClick={this.handleToggleModal} />
+        )}
+        {status === STATUS.REJECTED && (
+          <div className={css.error}>
+            <h1>{error.message}</h1>
+          </div>
         )}
         {isActive && <Button onClick={this.handleLoadMoreClick} />}
         {showModal && (
