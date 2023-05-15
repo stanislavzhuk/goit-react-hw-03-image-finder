@@ -18,8 +18,9 @@
 }
 
 /*
- * Стили компонента SearchForm
+ * Styles of the SearchForm component
  */
+ 
 .SearchForm {
   display: flex;
   align-items: center;

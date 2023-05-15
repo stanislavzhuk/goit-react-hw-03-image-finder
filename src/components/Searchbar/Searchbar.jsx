@@ -1,5 +1,4 @@
 import { Component } from "react";
-// import PropTypes from 'prop-types';
 import css from './Searchbar.module.css';
 
 class Searchbar extends Component {
@@ -14,8 +13,8 @@ class Searchbar extends Component {
           <input
             className={css.SearchFormInput}
             type="text"
-            autocomplete="off"
-            autofocus
+            autoComplete="off"
+            autoFocus
             placeholder="Search images and photos"
           />
         </form>
