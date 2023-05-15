@@ -44,26 +44,26 @@ class App extends Component {
     this.setState({searchQuery})
   }
 
-  handleOpenModal = image => {
-    const largeImage = { url: image.largeImageURL, alt: image.tags };
-    this.setState({ largeImage, showModal: true });
-  };
-
-  handleCloseModal = () => {
-    this.setState({ showModal: false });
+  handleToggleModal = (image = null) => {
+    if (image) {
+      const largeImage = { src: image.largeImageURL, alt: image.tags };
+      this.setState({ largeImage, showModal: true });
+    } else {
+      this.setState({ showModal: false });
+    }
   };
   
   render() {
-    const { images, showModal } = this.state;
+    const { images, showModal, largeImage } = this.state;
 
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleFormSubmit} />
-        <ImageGallery images={images} onClick={this.handleOpenModal} />
+        <ImageGallery images={images} onClick={this.handleToggleModal} />
         {showModal && (
           <Modal
-            image={this.state.largeImage}
-            onClose={this.handleCloseModal}
+            image={largeImage}
+            onClose={this.handleToggleModal}
           />
         )}
         <ToastContainer />

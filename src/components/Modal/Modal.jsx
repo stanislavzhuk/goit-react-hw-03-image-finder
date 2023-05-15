@@ -18,12 +18,12 @@ class Modal extends Component {
   };
 
   render() {
-    const { url, alt } = this.props.image;
+    const { src, alt } = this.props.image;
 
     return (
       <div className={css.Overlay} onClick={this.handleClick}>
         <div className={css.Modal}>
-          <img src={url} alt={alt} />
+          <img src={src} alt={alt} />
         </div>
       </div>
     )
@@ -32,7 +32,7 @@ class Modal extends Component {
 
 Modal.propTypes = {
   image: PropTypes.shape({
-    url: PropTypes.string.isRequired,
+    src: PropTypes.string.isRequired,
     alt: PropTypes.string.isRequired,
   }).isRequired,
   onClose: PropTypes.func.isRequired,
