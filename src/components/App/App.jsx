@@ -2,6 +2,8 @@ import { Component } from 'react';
 // import fetchImages from 'services/ApiPixabay';
 import Searchbar from 'components/Searchbar/Searchbar';
 
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import css from './App.module.css';
 
 class App extends Component {
@@ -18,6 +20,7 @@ class App extends Component {
   render() {
     return (
       <div className={css.App}>
+        <ToastContainer />
         <Searchbar onSubmit={this.handleFormSubmit} />
       </div>
     )
