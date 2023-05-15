@@ -10,11 +10,15 @@ class App extends Component {
     page: 1,
     images: [],
   };
+
+  handleFormSubmit = searchQuery => {
+    this.setState({searchQuery})
+  }
   
   render() {
     return (
       <div className={css.App}>
-        <Searchbar />
+        <Searchbar onSubmit={this.handleFormSubmit} />
       </div>
     )
   }
