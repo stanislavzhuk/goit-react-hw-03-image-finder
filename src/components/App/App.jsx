@@ -2,6 +2,7 @@ import { Component } from 'react';
 import fetchImages from 'services/ApiPixabay';
 import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
+import Modal from 'components/Modal/Modal';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,6 +15,8 @@ class App extends Component {
     images: [],
     status: 'idle',
     error: null,
+    largeImage: {},
+    showModal: false,
   };
 
   async componentDidUpdate(pervProps, prevState) {
@@ -40,15 +43,30 @@ class App extends Component {
   handleFormSubmit = searchQuery => {
     this.setState({searchQuery})
   }
+
+  handleOpenModal = image => {
+    const largeImage = { url: image.largeImageURL, alt: image.tags };
+    this.setState({ largeImage, showModal: true });
+  };
+
+  handleCloseModal = () => {
+    this.setState({ showModal: false });
+  };
   
   render() {
-    const { images } = this.state;
+    const { images, showModal } = this.state;
 
     return (
       <div className={css.App}>
-        <ToastContainer />
         <Searchbar onSubmit={this.handleFormSubmit} />
         <ImageGallery images={images} onClick={this.handleOpenModal} />
+        {showModal && (
+          <Modal
+            image={this.state.largeImage}
+            onClose={this.handleCloseModal}
+          />
+        )}
+        <ToastContainer />
       </div>
     )
   }
