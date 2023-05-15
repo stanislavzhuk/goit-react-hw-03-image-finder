@@ -4,6 +4,7 @@ import Searchbar from 'components/Searchbar/Searchbar';
 import ImageGallery from 'components/ImageGallery/ImageGallery';
 import Modal from 'components/Modal/Modal';
 import Loader from 'components/Loader/Loader';
+import Button from 'components/Button/Button';
 
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -14,7 +15,7 @@ const STATUS = {
   PENDING: 'PENDING',
   RESOLVED: 'RESOLVED',
   REJECTED: 'REJECTED',
-}
+};
 
 class App extends Component {
   state = {
@@ -25,18 +26,25 @@ class App extends Component {
     error: null,
     largeImage: {},
     showModal: false,
+    isActive: false,
   };
 
   async componentDidUpdate(pervProps, prevState) {
-    const { searchQuery, page } = this.state;
+    const { searchQuery, page, images } = this.state;
     if (prevState.searchQuery !== searchQuery || prevState.page !== page) {
       this.setState({ status: STATUS.PENDING });
 
       try {
-        const { hits } = await fetchImages(searchQuery, page);
+        const { hits, totalHits
+        } = await fetchImages(searchQuery, page);
         if (!hits.length) {
           toast.warning('No results were found for your search, please try something else.')
         }
+        if (images.length + 12 <= totalHits) {
+          this.setState({ isActive: true });
+        } else {
+            this.setState({ isActive: false });
+          }
         this.setState(({ images }) => ({
           images: [...images, ...hits],
           status: STATUS.RESOLVED,
@@ -46,7 +54,7 @@ class App extends Component {
         this.setState({ status: STATUS.REJECTED });
       }
     }
-  }
+  };
 
   resetState = () => {
     this.setState({
@@ -58,7 +66,7 @@ class App extends Component {
       largeImage: {},
       showModal: false,
     })
-  }
+  };
 
   handleFormSubmit = searchQuery => {
     if (this.state.searchQuery === searchQuery) {
@@ -66,7 +74,7 @@ class App extends Component {
     }
     this.resetState();
     this.setState({ searchQuery });
-  }
+  };
 
   handleToggleModal = (image = null) => {
     if (image) {
@@ -76,15 +84,24 @@ class App extends Component {
       this.setState({ showModal: false });
     }
   };
+
+  handleLoadMoreClick = () => {
+    this.setState(prevState => ({
+      page: prevState.page + 1,
+    }));
+  };
   
   render() {
-    const { images, showModal, largeImage, status } = this.state;
+    const { images, showModal, largeImage, status, isActive } = this.state;
 
     return (
       <div className={css.App}>
         <Searchbar onSubmit={this.handleFormSubmit} />
         {status === STATUS.PENDING && <Loader />}
-        <ImageGallery images={images} onClick={this.handleToggleModal} />
+        {status === STATUS.RESOLVED && (
+          <ImageGallery images={images} onClick={this.handleToggleModal} />
+        )}
+        {isActive && <Button onClick={this.handleLoadMoreClick} />}
         {showModal && (
           <Modal
             image={largeImage}
@@ -93,7 +110,7 @@ class App extends Component {
         )}
         <ToastContainer />
       </div>
-    )
+    );
   }
 }
 
